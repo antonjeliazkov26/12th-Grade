@@ -1,0 +1,67 @@
+public class User {
+    private String userId;
+    private String password;
+    private String loginStatus;
+
+    public User(String userId, String password) {
+        this.userId = userId;
+        this.password = password;
+        this.loginStatus = "Logged Out";
+    }
+
+    public boolean verifyLogin(String userId, String password) {
+        if (this.userId.equals(userId) && this.password.equals(password)) {
+            this.loginStatus = "Logged In";
+            return true;
+        } else {
+            this.loginStatus = "Login Failed";
+            return false;
+        }
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getLoginStatus() {
+        return loginStatus;
+    }
+}
+public class Administrator extends User {
+    private String adminName;
+    private String email;
+
+    public Administrator(String userId, String password, String adminName, String email) {
+        super(userId, password);
+        this.adminName = adminName;
+        this.email = email;
+    }
+
+    public boolean updateCatalog() {
+        System.out.println("Catalog has been updated by " + adminName);
+        return true;
+    }
+
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Administrator admin = new Administrator("admin001", "password123", "Alice", "alice@example.com");
+
+        if (admin.verifyLogin("admin001", "password123")) {
+            System.out.println(admin.getAdminName() + " logged in successfully.");
+            System.out.println("Login Status: " + admin.getLoginStatus());
+            admin.updateCatalog();
+        } else {
+            System.out.println("Login failed!");
+        }
+    }
+}
+
