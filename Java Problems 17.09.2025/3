@@ -1,0 +1,75 @@
+import java.io.*;
+import java.util.*;
+
+class BookKey {
+    String author;
+    String title;
+    double price;
+
+    BookKey(String author, String title, double price) {
+        this.author = author;
+        this.title = title;
+        this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BookKey)) return false;
+        BookKey other = (BookKey) o;
+        return Double.compare(price, other.price) == 0 &&
+                author.equals(other.author) &&
+                title.equals(other.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, title, price);
+    }
+}
+
+public class BookSalesProcessor {
+    public static void main(String[] args) {
+        String inputFile = "books.txt";
+        String outputFile = "book_averages.txt";
+
+        Map<BookKey, List<Integer>> salesData = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(","); 
+                if (parts.length != 5) continue;
+
+                String author = parts[0].trim();
+                String title = parts[1].trim();
+                int year = Integer.parseInt(parts[2].trim());
+                double price = Double.parseDouble(parts[3].trim());
+                int sales = Integer.parseInt(parts[4].trim());
+
+                BookKey key = new BookKey(author, title, price);
+
+                salesData.putIfAbsent(key, new ArrayList<>());
+                salesData.get(key).add(sales);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+            for (Map.Entry<BookKey, List<Integer>> entry : salesData.entrySet()) {
+                BookKey key = entry.getKey();
+                List<Integer> salesList = entry.getValue();
+
+                double avgSales = salesList.stream().mapToInt(Integer::intValue).average().orElse(0);
+
+                bw.write(key.author + ", " + key.title + ", " + key.price + ", " + avgSales);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Output file created: " + outputFile);
+    }
+}
