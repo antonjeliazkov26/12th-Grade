@@ -1,0 +1,62 @@
+import java.util.*;
+
+public class StudentsWorks {
+    private int N;
+    private double[] results;
+    private List<Double> validWorks = new ArrayList<>();
+
+    public StudentsWorks(int N) {
+        this.N = N;
+        this.results = new double[N];
+    }
+
+    public void ReadPoints(Scanner sc) {
+        for (int i = 0; i < N; i++) {
+            results[i] = sc.nextDouble();
+            if (results[i] > 0) {
+                validWorks.add(results[i]);
+            }
+        }
+    }
+
+    public double MinDpoints() {
+        Set<Double> unique = new TreeSet<>(validWorks);
+        List<Double> sorted = new ArrayList<>(unique);
+        double minDiff = Double.MAX_VALUE;
+        for (int i = 1; i < sorted.size(); i++) {
+            double diff = sorted.get(i) - sorted.get(i - 1);
+            if (diff < minDiff) {
+                minDiff = diff;
+            }
+        }
+        return minDiff;
+    }
+
+    public int Laureates() {
+        Set<Double> unique = new TreeSet<>(validWorks);
+        List<Double> sorted = new ArrayList<>(unique);
+        int size = sorted.size();
+        double thirdHighest = sorted.get(size - 3);
+        int count = 0;
+        for (double v : validWorks) {
+            if (v >= thirdHighest) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void Output() {
+        System.out.println("valid works - " + validWorks.size());
+        System.out.printf("minimal difference - %.3f%n", MinDpoints());
+        System.out.println("laureates - " + Laureates());
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        StudentsWorks sw = new StudentsWorks(N);
+        sw.ReadPoints(sc);
+        sw.Output();
+    }
+}
