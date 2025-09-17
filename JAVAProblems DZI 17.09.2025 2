@@ -1,16 +1,12 @@
 
-Anton Jeliazkov <a.jeliazkov26@acsbg.org>
-9:20 AM (0 minutes ago)
-to me
-
 import java.io.*;
 import java.util.*;
 
 abstract class HospitalStaff {
-protected String firstName;
-protected String lastName;
-protected int age;
-protected double salary;
+ String firstName;
+ String lastName;
+ int age;
+ double salary;
 
 public HospitalStaff(String firstName, String lastName, int age, double salary) {
 if (age <= 0) throw new IllegalArgumentException("Age must be a positive number.");
