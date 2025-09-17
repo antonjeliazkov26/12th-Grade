@@ -1,0 +1,26 @@
+public class MinDistanceBetweenWords {
+    public static int minDistance(String[] words, String word1, String word2) {
+        int idx1 = -1, idx2 = -1, minDist = Integer.MAX_VALUE;
+
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word1)) {
+                idx1 = i;
+            }
+            if (words[i].equals(word2)) {
+                idx2 = i;
+            }
+            if (idx1 != -1 && idx2 != -1) {
+                minDist = Math.min(minDist, Math.abs(idx1 - idx2));
+            }
+        }
+        return minDist == Integer.MAX_VALUE ? -1 : minDist;
+    }
+
+    public static void main(String[] args) {
+        String[] S1 = {"the", "quick", "brown", "fox", "quick"};
+        System.out.println(minDistance(S1, "the", "fox")); // Output: 3
+
+        String[] S2 = {"apple", "for", "apple", "contribute", "practice"};
+        System.out.println(minDistance(S2, "apple", "practice")); // Output: 2
+    }
+}
