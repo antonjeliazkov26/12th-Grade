@@ -1,0 +1,32 @@
+CREATE TABLE Pacient (
+    pacient_id INT PRIMARY KEY AUTO_INCREMENT,
+    ime VARCHAR(50) NOT NULL,
+    prezime VARCHAR(50),
+    familiya VARCHAR(50) NOT NULL,
+    adres VARCHAR(100),
+    egn CHAR(10) UNIQUE NOT NULL
+);
+
+CREATE TABLE Lekarstvo (
+    lekarstvo_id INT PRIMARY KEY AUTO_INCREMENT,
+    naimenovanie VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Pregled (
+    pregled_id INT PRIMARY KEY AUTO_INCREMENT,
+    pacient_id INT NOT NULL,
+    rezervacia_id INT,
+    data_pregled DATE NOT NULL,
+    chas_pregled TIME,
+    diagnoza VARCHAR(255),
+    FOREIGN KEY (pacient_id) REFERENCES Pacient(pacient_id)
+);
+
+CREATE TABLE Pregled_Lekarstvo (
+    pregled_id INT,
+    lekarstvo_id INT,
+    doza VARCHAR(50),
+    PRIMARY KEY (pregled_id, lekarstvo_id),
+    FOREIGN KEY (pregled_id) REFERENCES Pregled(pregled_id),
+    FOREIGN KEY (lekarstvo_id) REFERENCES Lekarstvo(lekarstvo_id)
+);
